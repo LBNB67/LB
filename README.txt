@@ -773,3 +773,4 @@
 127.0.0.1 zydz88.114ic.com
 127.0.0.1 zydz888.114ic.com
 127.0.0.1 anticheatexpert.com
+127.0.0.1 baidu.com
