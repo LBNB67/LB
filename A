@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页加密工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+            z-index: -1;
+            border-radius: 20px;
+        }
+        
+        header {
+            background: rgba(75, 108, 183, 0.1);
+            color: #4b6cb7;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+        
+        .tool-section {
+            padding: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4b6cb7;
+            font-size: 1.05rem;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 1px solid rgba(75, 108, 183, 0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: rgba(75, 108, 183, 0.5);
+            box-shadow: 0 0 0 2px rgba(75, 108, 183, 0.1), inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 140px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        .encrypt-btn {
+            background: rgba(75, 108, 183, 0.15);
+            color: #4b6cb7;
+            border: 1px solid rgba(75, 108, 183, 0.3);
+        }
+        
+        .encrypt-btn:hover {
+            background: rgba(75, 108, 183, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(75, 108, 183, 0.2);
+        }
+        
+        .decrypt-btn {
+            background: rgba(0, 176, 155, 0.15);
+            color: #00b09b;
+            border: 1px solid rgba(0, 176, 155, 0.3);
+        }
+        
+        .decrypt-btn:hover {
+            background: rgba(0, 176, 155, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 176, 155, 0.2);
+        }
+        
+        .clear-btn {
+            background: rgba(255, 94, 98, 0.15);
+            color: #ff5e62;
+            border: 1px solid rgba(255, 94, 98, 0.3);
+        }
+        
+        .clear-btn:hover {
+            background: rgba(255, 94, 98, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 94, 98, 0.2);
+        }
+
+        .upload-btn {
+            background: rgba(155, 81, 224, 0.15);
+            color: #9b51e0;
+            border: 1px solid rgba(155, 81, 224, 0.3);
+        }
+        
+        .upload-btn:hover {
+            background: rgba(155, 81, 224, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(155, 81, 224, 0.2);
+        }
+
+        .download-btn {
+            background: rgba(47, 128, 237, 0.15);
+            color: #2f80ed;
+            border: 1px solid rgba(47, 128, 237, 0.3);
+        }
+        
+        .download-btn:hover {
+            background: rgba(47, 128, 237, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(47, 128, 237, 0.2);
+        }
+        
+        .instructions {
+            background: rgba(248, 249, 250, 0.7);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border-left: 4px solid rgba(75, 108, 183, 0.5);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+        }
+        
+        .instructions h2 {
+            color: #4b6cb7;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .instructions p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        
+        .instructions code {
+            background: rgba(233, 236, 239, 0.7);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        .example {
+            background: rgba(238, 245, 255, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            border: 1px solid rgba(75, 108, 183, 0.1);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(241, 241, 241, 0.5);
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .status-indicator {
+            height: 4px;
+            width: 0;
+            background: linear-gradient(90deg, #4b6cb7, #00b09b);
+            border-radius: 2px;
+            margin-bottom: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .button-group {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                border-radius: 15px;
+            }
+        }
+
+        #file-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HTML加密/解密</h1>
+            <p class="subtitle">通过URL编码的简单加密工具</p>
+        </header>
+        
+        <section class="tool-section">
+            <div class="input-group">
+                <label for="input-text">输入HTML代码：</label>
+                <div class="status-indicator" id="input-status"></div>
+                <textarea id="input-text" placeholder="请将需要加密或解密的HTML代码粘贴在这里..."></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button class="encrypt-btn" onclick="encryptHTML()">
+                    <span>加密HTML</span>
+                </button>
+                <button class="decrypt-btn" onclick="decryptHTML()">
+                    <span>解密HTML</span>
+                </button>
+                <button class="clear-btn" onclick="clearText()">
+                    <span>清空内容</span>
+                </button>
+            </div>
+
+            <div class="button-group">
+                <button class="upload-btn" onclick="readFromFile()">
+                    <span>从文件读取</span>
+                </button>
+                <button class="download-btn" onclick="saveToFile()">
+                    <span>保存到文件</span>
+                </button>
+            </div>
+            
+            <div class="input-group">
+                <label for="output-text">处理结果：</label>
+                <div class="status-indicator" id="output-status"></div>
+                <textarea id="output-text" placeholder="加密或解密后的结果将显示在这里..." readonly></textarea>
+            </div>
+            
+            <div class="instructions">
+                <h2>使用说明</h2>
+                <p><strong>加密方法：</strong>将HTML源代码粘贴在上方输入框，点击"加密HTML"按钮即可获得加密后的代码。</p>
+                <p><strong>解密方法：</strong>将加密后的代码粘贴在上方输入框，点击"解密HTML"按钮即可还原原始代码。</p>
+                
+                <p><strong>加密原理：</strong>本工具使用JavaScript的escape/unescape函数进行编码/解码转换。</p>
+                
+                <p><strong>文件操作：</strong>支持直接从文件读取HTML代码，以及将处理结果保存到本地文件。</p>
+                
+                <p><strong>加密示例：</strong>加密HTML源代码后的格式示例。</p>
+                <div class="example">
+                    &lt;script&gt;document.write(unescape("加密后的HTML代码"));&lt;/script&gt;
+                </div>
+                
+                <p><strong>注意事项：</strong></p>
+                <ul>
+                    <li>加密重要源代码前请备份</li>
+                    <li>对包含大量中文的代码进行加密会使代码体积增大</li>
+                    <li>加密后的代码需要JavaScript支持才能正常显示</li>
+                    <li>支持上传的文件格式：.html, .htm, .txt</li>
+                </ul>
+            </div>
+        </section>
+        
+        <footer>
+            <p>© 2025 HTML加密工具</p>
+        </footer>
+    </div>
+
+    <input type="file" id="file-input" accept=".html,.htm,.txt">
+
+    <script>
+        // 初始化文件输入控件
+        const fileInput = document.getElementById('file-input');
+        
+        // 监听文件选择
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // 显示处理状态
+            const statusIndicator = document.getElementById('input-status');
+            statusIndicator.style.width = '100%';
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('input-text').value = e.target.result;
+                
+                // 完成状态
+                statusIndicator.style.background = 'linear-gradient(90deg, #00b09b, #96c93d)';
+                setTimeout(() => {
+                    statusIndicator.style.width = '0';
+                    setTimeout(() => {
+                        statusIndicator.style.background = 'linear-gradient(90deg, #4b6cb7, #00b09b)';
+                    }, 300);
+                }, 500);
+            };
+            reader.onerror = function() {
+                alert('文件读取失败，请重试！');
+                statusIndicator.style.width = '0';
+            };
+            reader.readAsText(file);
+        });
+        
+        function readFromFile() {
+            fileInput.click();
+        }
+        
+        function saveToFile() {
+            const outputText = document.getElementById('output-text').value;
+            if (!outputText) {
+                alert('没有内容可保存！');
+                return;
+            }
+            
+            // 显示处理状态
+            const statusIndicator = document.getElementById('output-status');
+            statusIndicator.style.width = '100%';
+            
+            setTimeout(() => {
+                const blob = new Blob([outputText], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                
+                // 根据内容自动选择文件名
+                const isEncrypted = outputText.includes('document.write(unescape(');
+                const filename = isEncrypted ? 'encrypted_' + new Date().getTime() + '.html' : 'decrypted_' + new Date().getTime() + '.html';
+                
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // 完成状态
+                statusIndicator.style.background = 'linear-gradient(90deg, #00b09b, #96c93d)';
+                setTimeout(() => {
+                    statusIndicator.style.width = '0';
+                    setTimeout(() => {
+                        statusIndicator.style.background = 'linear-gradient(90deg, #4b6cb7, #00b09b)';
+                    }, 300);
+                }, 500);
+            }, 600);
+        }
+        
+        function encryptHTML() {
+            const inputText = document.getElementById('input-text').value;
+            if (!inputText) {
+                alert('请输入要加密的HTML代码！');
+                return;
+            }
+            
+            try {
+                // 显示处理状态
+                const statusIndicator = document.getElementById('output-status');
+                statusIndicator.style.width = '100%';
+                
+                setTimeout(() => {
+                    const encryptedText = escape(inputText);
+                    // 将加密后的代码包装在script标签中，方便用户直接使用
+                    const wrappedText = `<!-- 网页加密 -->
+<script>document.write(unescape("${encryptedText}"));<\/script>`;
+                    document.getElementById('output-text').value = wrappedText;
+                    
+                    // 完成状态
+                    statusIndicator.style.background = 'linear-gradient(90deg, #00b09b, #96c93d)';
+                    setTimeout(() => {
+                        statusIndicator.style.width = '0';
+                        setTimeout(() => {
+                            statusIndicator.style.background = 'linear-gradient(90deg, #4b6cb7, #00b09b)';
+                        }, 300);
+                    }, 500);
+                }, 600);
+            } catch (e) {
+                alert('加密过程中出现错误：' + e.message);
+            }
+        }
+        
+        function decryptHTML() {
+            const inputText = document.getElementById('input-text').value;
+            if (!inputText) {
+                alert('请输入要解密的代码！');
+                return;
+            }
+            
+            try {
+                // 显示处理状态
+                const statusIndicator = document.getElementById('output-status');
+                statusIndicator.style.width = '100%';
+                
+                setTimeout(() => {
+                    // 尝试从script标签中提取加密内容
+                    let encryptedText = inputText;
+                    const scriptMatch = inputText.match(/document\.write\(unescape\("([^"]+)"\)\)/);
+                    if (scriptMatch && scriptMatch[1]) {
+                        encryptedText = scriptMatch[1];
+                    }
+                    
+                    const decryptedText = unescape(encryptedText);
+                    document.getElementById('output-text').value = decryptedText;
+                    
+                    // 完成状态
+                    statusIndicator.style.background = 'linear-gradient(90deg, #00b09b, #96c93d)';
+                    setTimeout(() => {
+                        statusIndicator.style.width = '0';
+                        setTimeout(() => {
+                            statusIndicator.style.background = 'linear-gradient(90deg, #4b6cb7, #00b09b)';
+                        }, 300);
+                    }, 500);
+                }, 600);
+            } catch (e) {
+                alert('解密过程中出现错误：' + e.message);
+            }
+        }
+        
+函数明文(){
+文件。getElementById('input-text')。价值="；
+文件。getElementById('output-text')。价值="；
+            
+// 添加清空动画效果
+Const inputStatus=document.getElementById('input-status')；
+常量outputStatus=document.getElementById('output-status')；
+            
+inputStatus.style.width='100%'；
+outputStatus.style.width='100%'；
+inputStatus。风格。background='线性梯度(90deg，#ff5e62，#ff9966)'；
+outputStatus。风格。背景='线性梯度(90deg，#ff5e62，#ff9966)'；
+            
+setTimeout(()=>{
+inputStatus.style.width="0"；
+outputStatus.style.width="0"；
+setTimeout(()=>{
+inputStatus.style.background='线性梯度(90度，#4b6cb7，#00b09b)'；
+outputStatus.style.background='线性梯度(90度，#4b6cb7，#00b09b)'；
+}, 300);
+}, 500);
+        }
+        
+// 添加输入状态指示器动画
+文件。getElementById('input-text')。addEventListener('input'，函数(){
+ConstatusIndicator=document.getElementById('input-status')；
+if(this.value.length>0){
+statusIndicator.style.width='100%'；
+}else{
+statusIndicator.style.width="0"；
+            }
+        });
+        
+// 添加页面加载动画
+window.addEventListener('load'，function(){
+文件。querySelector('.容器')。风格。不透明度=“0”；
+文件。querySelector('.容器')。风格。改变='translateY(20px)'；
+            
+setTimeout(()=>{
+文件。querySelector('.容器')。风格。过渡='不透明度0.5s缓解，变换0.5s缓解'；
+文件。querySelector('.容器')。风格。不透明度='1'；
+文件。querySelector('.容器')。风格。改变='translateY(0)'；
+}, 100);
+        });
+</script>
+</body>
+</html>
