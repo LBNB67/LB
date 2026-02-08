@@ -1,39 +1,39 @@
-<<>
->风格>风格>风格>头<头
-！doctype超文本标记语言
-<<元字符集="UTF-8">字符集="UTF-8">
-<<元名称=“视口”内容=“宽度=设备宽度，初始比例=1.0”>=“视口”内容=“宽度=设备宽度，初始比例=1.0”>
-<标题<标题>网页加密工具</标题>网页加密工具</标题>
->风格<风格<
-*{
-页边距：0；
-填充：0；
-框大小：边框框；
-字体系列：'Segoe UI'，“微软雅黑”，无衬线；
--webkit-tap-highlight-color：透明；
-轻敲-突出-颜色：透明；
--webkit-touch-callout：无；
--webkit-user-select：无；
-用户选择：无；
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页加密工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
         
-正文{
-背景：线性梯度(135度，#f0f4ff 0%，#e6f0ff100%)；
-颜色：#333；
-线高：1.6；
-最低高度：100vh；
-填料：20px；
-显示：柔性；
-对齐-内容：居中；
-对齐项：居中；
+        body {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
-.容器{
-最大宽度：1000px；
-宽度：100%；
-背景：RGBA(255，255，255，0.8)；
-背景滤镜：模糊(10 PX)；
-边界半径：20px；
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -480,75 +480,75 @@
                 const statusIndicator = document.getElementById('output-status');
                 statusIndicator.style.width = '100%';
                 
-                setTimeout(() => {
-                    // 尝试从script标签中提取加密内容
-                    let encryptedText = inputText;
-                    const scriptMatch = inputText.match(/document\.write\(unescape\("([^"]+)"\)\)/);
-                    if (scriptMatch && scriptMatch[1]) {
-                        encryptedText = scriptMatch[1];
+                setTimeout(()=>{
+                    //尝试从脚本标签中提取加密内容
+                    让encryptedText=inputText;
+                    ConstscriptMatch=inputText.匹配(/document\.write\(unescape\("([^"]+)"\)\)/);
+                    如果 (scriptMatch && scriptMatch[1]) {
+                        encryptedText=scriptMatch[1];
                     }
                     
-                    const decryptedText = unescape(encryptedText);
-                    document.getElementById('output-text').value = decryptedText;
+                    ConstdecryptedText=不逃脱(encryptedText);
+                    文件.getElementById('输出文本').价值=decryptedText;
                     
                     // 完成状态
-                    statusIndicator.style.background = 'linear-gradient(90deg, #00b09b, #96c93d)';
-                    setTimeout(() => {
-                        statusIndicator.style.width = '0';
-                        setTimeout(() => {
-                            statusIndicator.style.background = 'linear-gradient(90deg, #4b6cb7, #00b09b)';
+                    statusIndicator.风格.背景='线性梯度(90度，#00b09b，#96c93d)';
+                    setTimeout(()=>{
+                        statusIndicator.风格.宽度='0';
+                        setTimeout(()=>{
+                            statusIndicator.风格.背景='线性梯度(90度，#4b6cb7，#00b09b)';
                         }, 300);
                     }, 500);
                 }, 600);
-            } catch (e) {
-                alert('解密过程中出现错误：' + e.message);
+            } 赶上 (e) {
+                警惕的('解密过程中出现错误：'+e.消息);
             }
         }
         
-函数明文(){
-文件。getElementById('input-text')。价值="；
-文件。getElementById('output-text')。价值="；
+风格=宽度功能明文() {
+文件.getElementById('输入文本').价值="；document.getElementById('input-text')。价值="；
+文件.getElementById('输出文本').价值="；document.getElementById('output-text')。价值="；
             
-// 添加清空动画效果
-Const inputStatus=document.getElementById('input-status')；
-常量outputStatus=document.getElementById('output-status')；
+// 添加清空动画效果// 添加清空动画效果
+ConstinputStatus=文件.getElementById('输入状态')；常数inputStatus=文件.getElementById('输入状态');
+常量outputStatus=文件.getElementById('输出状态')；常数outputStatus=文件.getElementById('输出状态');
             
-inputStatus.style.width='100%'；
-outputStatus.style.width='100%'；
-inputStatus。风格。background='线性梯度(90deg，#ff5e62，#ff9966)'；
-outputStatus。风格。背景='线性梯度(90deg，#ff5e62，#ff9966)'；
+inputStatus.风格.宽度='100%'；inputStatus.风格.宽度='100%';
+outputStatus.            .宽度='100%'；outputStatus.风格.宽度='100%';
+inputStatus.风格.背景='线性梯度(90度，#ff5e62，#ff9966)'；inputStatus.风格.背景='线性梯度(90度，#ff5e62，#ff9966)';
+outputStatus.风格.背景='线性梯度(90度，#ff5e62，#ff9966)'；outputStatus.风格.背景='线性梯度(90度，#ff5e62，#ff9966)';
             
-setTimeout(()=>{
-inputStatus.style.width="0"；
-outputStatus.style.width="0"；
-setTimeout(()=>{
-inputStatus.style.background='线性梯度(90度，#4b6cb7，#00b09b)'；
-outputStatus.style.background='线性梯度(90度，#4b6cb7，#00b09b)'；
-}, 300);
-}, 500);
+setTimeout(()=>{setTimeout(()=>{
+inputStatus.风格.宽度="0"；inputStatus.风格.宽度='0';
+outputStatus.风格.宽度="0"；outputStatus.风格.宽度='0';
+setTimeout(()=>{setTimeout(()=>{
+inputStatus.风格.背景='线性梯度(90度，#4b6cb7，#00b09b)'；inputStatus.风格.背景='线性梯度(90度，#4b6cb7，#00b09b)';
+outputStatus.风格.背景='线性梯度(90度，#4b6cb7，#00b09b)'；outputStatus.风格.背景='线性梯度(90度，#4b6cb7，#00b09b)';
+}, 300);}, 300);
+}, 500);}, 500);
         }
         
-// 添加输入状态指示器动画
-文件。getElementById('input-text')。addEventListener('input'，函数(){
-ConstatusIndicator=document.getElementById('input-status')；
-if(this.value.length>0){
-statusIndicator.style.width='100%'；
-}else{
-statusIndicator.style.width="0"；
+// 添加输入状态指示器动画// 添加输入状态指示器动画
+文件。getElementById('输入文本').addEventListener('输入'，函数(){文件.getElementById('输入文本').addEventListener('输入', 功能() {
+ConstatusIndicator=文件.getElementById('输入状态')；常数statusIndicator=文件.getElementById('输入状态');
+如果(这.价值.长度>0){如果 (这.价值.长度>0) {
+statusIndicator.风格.宽度='100%'；statusIndicator.风格.宽度='100%';
+}其他{} 其他{
+statusIndicator.风格.宽度=“0”；statusIndicator.风格.宽度='0';
             }
         });
         
-// 添加页面加载动画
-window.addEventListener('load'，function(){
-文件。querySelector('.容器')。风格。不透明度=“0”；
-文件。querySelector('.容器')。风格。改变='translateY(20px)'；
+// 添加页面加载动画// 添加页面加载动画
+窗户.addEventListener('加载'，函数(){窗户.addEventListener('加载', 功能() {
+文件。querySelector('.容器')。风格。不透明度=“0”；文档.querySelector('.容器').风格.不透明度='0';
+文件。querySelector('.容器')。风格。改变='translateY(20px)'；文档.querySelector('.容器').风格.改变='translateY(20px)';
             
-setTimeout(()=>{
-文件。querySelector('.容器')。风格。过渡='不透明度0.5s缓解，变换0.5s缓解'；
-文件。querySelector('.容器')。风格。不透明度='1'；
-文件。querySelector('.容器')。风格。改变='translateY(0)'；
-}, 100);
+setTimeout(()=>{setTimeout(()=>{
+文件。querySelector('.容器')。风格。过渡='不透明度0.5s缓解，变换0.5s缓解'；文档.querySelector('.容器').风格.过渡='不透明度0.5s缓解，转换0.5s缓解';
+文件。querySelector('.容器')。风格。不透明度='1'；文档.querySelector('.容器').风格.不透明度='1';
+文件。querySelector('.容器')。风格。改变='translateY(0)'；文档.querySelector('.容器').风格.改变='translateY(0)';
+}, 100);}, 100);
         });
-</script>
-</body>
-</html>
+</脚本>
+</身体>
+</超文本标记语言>
