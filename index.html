@@ -480,75 +480,75 @@
                 const statusIndicator = document.getElementById('output-status');
                 statusIndicator.style.width = '100%';
                 
-                setTimeout(()=>{
-                    //尝试从脚本标签中提取加密内容
-                    让encryptedText=inputText;
-                    ConstscriptMatch=inputText.匹配(/document\.write\(unescape\("([^"]+)"\)\)/);
-                    如果 (scriptMatch && scriptMatch[1]) {
-                        encryptedText=scriptMatch[1];
+                setTimeout(() => {
+                    // 尝试从script标签中提取加密内容
+                    let encryptedText = inputText;
+                    const scriptMatch = inputText.match(/document\.write\(unescape\("([^"]+)"\)\)/);
+                    if (scriptMatch && scriptMatch[1]) {
+                        encryptedText = scriptMatch[1];
                     }
                     
-                    ConstdecryptedText=不逃脱(encryptedText);
-                    文件.getElementById('输出文本').价值=decryptedText;
+                    const decryptedText = unescape(encryptedText);
+                    document.getElementById('output-text').value = decryptedText;
                     
                     // 完成状态
-                    statusIndicator.风格.背景='线性梯度(90度，#00b09b，#96c93d)';
-                    setTimeout(()=>{
-                        statusIndicator.风格.宽度='0';
-                        setTimeout(()=>{
-                            statusIndicator.风格.背景='线性梯度(90度，#4b6cb7，#00b09b)';
+                    statusIndicator.style.background = 'linear-gradient(90deg, #00b09b, #96c93d)';
+                    setTimeout(() => {
+                        statusIndicator.style.width = '0';
+                        setTimeout(() => {
+                            statusIndicator.style.background = 'linear-gradient(90deg, #4b6cb7, #00b09b)';
                         }, 300);
                     }, 500);
                 }, 600);
-            } 赶上 (e) {
-                警惕的('解密过程中出现错误：'+e.消息);
+            } catch (e) {
+                alert('解密过程中出现错误：' + e.message);
             }
         }
         
-风格=宽度功能明文() {
-文件.getElementById('输入文本').价值="；document.getElementById('input-text')。价值="；
-文件.getElementById('输出文本').价值="；document.getElementById('output-text')。价值="；
+        function clearText() {
+            document.getElementById('input-text').value = '';
+            document.getElementById('output-text').value = '';
             
-// 添加清空动画效果// 添加清空动画效果
-ConstinputStatus=文件.getElementById('输入状态')；常数inputStatus=文件.getElementById('输入状态');
-常量outputStatus=文件.getElementById('输出状态')；常数outputStatus=文件.getElementById('输出状态');
+            // 添加清空动画效果
+            const inputStatus = document.getElementById('input-status');
+            const outputStatus = document.getElementById('output-status');
             
-inputStatus.风格.宽度='100%'；inputStatus.风格.宽度='100%';
-outputStatus.            .宽度='100%'；outputStatus.风格.宽度='100%';
-inputStatus.风格.背景='线性梯度(90度，#ff5e62，#ff9966)'；inputStatus.风格.背景='线性梯度(90度，#ff5e62，#ff9966)';
-outputStatus.风格.背景='线性梯度(90度，#ff5e62，#ff9966)'；outputStatus.风格.背景='线性梯度(90度，#ff5e62，#ff9966)';
+            inputStatus.style.width = '100%';
+            outputStatus.style.width = '100%';
+            inputStatus.style.background = 'linear-gradient(90deg, #ff5e62, #ff9966)';
+            outputStatus.style.background = 'linear-gradient(90deg, #ff5e62, #ff9966)';
             
-setTimeout(()=>{setTimeout(()=>{
-inputStatus.风格.宽度="0"；inputStatus.风格.宽度='0';
-outputStatus.风格.宽度="0"；outputStatus.风格.宽度='0';
-setTimeout(()=>{setTimeout(()=>{
-inputStatus.风格.背景='线性梯度(90度，#4b6cb7，#00b09b)'；inputStatus.风格.背景='线性梯度(90度，#4b6cb7，#00b09b)';
-outputStatus.风格.背景='线性梯度(90度，#4b6cb7，#00b09b)'；outputStatus.风格.背景='线性梯度(90度，#4b6cb7，#00b09b)';
-}, 300);}, 300);
-}, 500);}, 500);
+            setTimeout(() => {
+                inputStatus.style.width = '0';
+                outputStatus.style.width = '0';
+                setTimeout(() => {
+                    inputStatus.style.background = 'linear-gradient(90deg, #4b6cb7, #00b09b)';
+                    outputStatus.style.background = 'linear-gradient(90deg, #4b6cb7, #00b09b)';
+                }, 300);
+            }, 500);
         }
         
-// 添加输入状态指示器动画// 添加输入状态指示器动画
-文件。getElementById('输入文本').addEventListener('输入'，函数(){文件.getElementById('输入文本').addEventListener('输入', 功能() {
-ConstatusIndicator=文件.getElementById('输入状态')；常数statusIndicator=文件.getElementById('输入状态');
-如果(这.价值.长度>0){如果 (这.价值.长度>0) {
-statusIndicator.风格.宽度='100%'；statusIndicator.风格.宽度='100%';
-}其他{} 其他{
-statusIndicator.风格.宽度=“0”；statusIndicator.风格.宽度='0';
+        // 添加输入状态指示器动画
+        document.getElementById('input-text').addEventListener('input', function() {
+            const statusIndicator = document.getElementById('input-status');
+            if (this.value.length > 0) {
+                statusIndicator.style.width = '100%';
+            } else {
+                statusIndicator.style.width = '0';
             }
         });
         
-// 添加页面加载动画// 添加页面加载动画
-窗户.addEventListener('加载'，函数(){窗户.addEventListener('加载', 功能() {
-文件。querySelector('.容器')。风格。不透明度=“0”；文档.querySelector('.容器').风格.不透明度='0';
-文件。querySelector('.容器')。风格。改变='translateY(20px)'；文档.querySelector('.容器').风格.改变='translateY(20px)';
+        // 添加页面加载动画
+        window.addEventListener('load', function() {
+            document.querySelector('.container').style.opacity = '0';
+            document.querySelector('.container').style.transform = 'translateY(20px)';
             
-setTimeout(()=>{setTimeout(()=>{
-文件。querySelector('.容器')。风格。过渡='不透明度0.5s缓解，变换0.5s缓解'；文档.querySelector('.容器').风格.过渡='不透明度0.5s缓解，转换0.5s缓解';
-文件。querySelector('.容器')。风格。不透明度='1'；文档.querySelector('.容器').风格.不透明度='1';
-文件。querySelector('.容器')。风格。改变='translateY(0)'；文档.querySelector('.容器').风格.改变='translateY(0)';
-}, 100);}, 100);
+            setTimeout(() => {
+                document.querySelector('.container').style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                document.querySelector('.container').style.opacity = '1';
+                document.querySelector('.container').style.transform = 'translateY(0)';
+            }, 100);
         });
-</脚本>
-</身体>
-</超文本标记语言>
+    </script>
+</body>
+</html>
