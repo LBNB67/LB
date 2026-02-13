@@ -231,7 +231,6 @@ def filter_accounts():
 @app.route('/api/test', methods=['GET'])
 def test():
     return jsonify({"status": "ok", "message": "API is running"})
-
-# Vercel 入口
-if __name__ == '__main__':
-    app=app
+def handler(event, context):
+    from wsgi import app
+    return app(event, context)
