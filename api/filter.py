@@ -10,12 +10,13 @@ app = Flask(__name__)
 # 目标URL
 TARGET_URL = 'https://comm.aci.game.qq.com/main?game=cjm&area=2&partition=&platid=1&callback=17319072866313099&sCloudApiName=ams.gameattr.role&iAmsActivityId=https%3A%2F%2Fgp.qq.com%2Fact%2Fa20190421cdkey%2Findex_pc.html'
 
+# 请求头
 HEADERS = {
     'Host': 'comm.aci.game.qq.com',
-    'Referer': 'https://gp.qq.com/',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    'Referer': 'https://gp.qq.com/'
 }
 
+# 段位映射函数
 def get_segment_name(score):
     if score is None:
         return "未知段位"
@@ -38,6 +39,7 @@ def get_segment_name(score):
     else:
         return "未知段位"
 
+# 时间戳转换函数
 def convert_timestamp(timestamp):
     try:
         return datetime.fromtimestamp(int(timestamp)).strftime('%Y-%m-%d %H:%M:%S')
@@ -61,7 +63,7 @@ def process_single_line(line):
     line = line.strip()
     if not line:
         return None
-    
+
     # 提取token
     access_token_match = re.search(r'access_token=([^&]*)', line)
     openid_match = re.search(r'openid=([^&]*)', line)
@@ -74,7 +76,7 @@ def process_single_line(line):
             "category_name": "格式错误",
             "output_line": f"格式错误---{line}"
         }
-    
+
     access_token = access_token_match.group(1)
     openid = openid_match.group(1)
     
@@ -127,7 +129,7 @@ def process_single_line(line):
             "raw": line
         }
         
-        # 分类逻辑 (严格按照你的Python代码)
+        # 分类逻辑（严格按照你的Python代码）
         if charac_name == "鉴权失败":
             result["category"] = "change_password"
             result["category_name"] = "改密码"
@@ -229,3 +231,7 @@ def filter_accounts():
 @app.route('/api/test', methods=['GET'])
 def test():
     return jsonify({"status": "ok", "message": "API is running"})
+
+# Vercel 入口
+if __name__ == '__main__':
+    app.run(debug=True)
