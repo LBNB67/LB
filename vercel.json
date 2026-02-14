@@ -1,23 +1,10 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/filter.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "public/index.html",
-      "use": "@vercel/static"
+  "functions": {
+    "api/filter.py": {
+      "runtime": "python3.9"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/filter",
-      "dest": "/api/filter.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/index.html"
-    }
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
