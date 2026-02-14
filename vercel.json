@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "api/filter.py": {
-      "runtime": "python3.9"
-    }
-  },
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
